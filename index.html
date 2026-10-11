@@ -343,12 +343,12 @@ footer.note .wrap{padding-block:22px}
       card.innerHTML =
         '<div class="swatch' + (w.sold ? ' sold' : '') + '">' +
           '<span class="badge">Sabit Fiyat</span>' +
-          '<img src="' + w.img + '" alt="' + w.title + ', ' + w.artist + '" loading="lazy">' +
+          '<img src="' + w.img + '" alt="' + esc(w.title) + ', ' + esc(w.artist) + '" loading="lazy">' +
         '</div>' +
         '<div class="info">' +
-          '<div class="artist">' + w.artist + '</div>' +
-          '<h3>' + w.title + '</h3>' +
-          '<div class="dims">' + dimsLine(w) + '</div>' +
+          '<div class="artist">' + esc(w.artist) + '</div>' +
+          '<h3>' + esc(w.title) + '</h3>' +
+          '<div class="dims">' + esc(dimsLine(w)) + '</div>' +
           '<div class="pricebox"><small>Satış fiyatı</small>' +
             '<div class="price">' + priceStr(w.price) + '</div>' +
             (w.sold
@@ -370,14 +370,14 @@ footer.note .wrap{padding-block:22px}
     if(!w) return;
     sheetBody.innerHTML =
       '<div class="layout">' +
-        '<div class="big-swatch"><img src="' + w.img + '" alt="' + w.title + ', ' + w.artist + '"></div>' +
+        '<div class="big-swatch"><img src="' + esc(w.img) + '" alt="' + esc(w.title) + ', ' + esc(w.artist) + '"></div>' +
         '<div class="txt">' +
-          '<div class="artist2">' + w.artist + '</div>' +
-          '<h2 id="sheet-title">' + w.title + '</h2>' +
+          '<div class="artist2">' + esc(w.artist) + '</div>' +
+          '<h2 id="sheet-title">' + esc(w.title) + '</h2>' +
           '<dl>' +
-            (w.year ? '<dt>Yıl</dt><dd>' + w.year + '</dd>' : '') +
-            (w.medium ? '<dt>Teknik</dt><dd>' + w.medium + '</dd>' : '') +
-            '<dt>Ölçü</dt><dd>' + w.size + '</dd>' +
+            (w.year ? '<dt>Yıl</dt><dd>' + esc(w.year) + '</dd>' : '') +
+            (w.medium ? '<dt>Teknik</dt><dd>' + esc(w.medium) + '</dd>' : '') +
+            '<dt>Ölçü</dt><dd>' + esc(w.size) + '</dd>' +
           '</dl>' +
           '<div class="price2">' + priceStr(w.price) + '</div>' +
           '<div class="how">Kart ile online ödeme alınmıyor. Satın almak için aşağıdaki butonla bize e-posta gönderin; ödeme ve teslimat detaylarını birlikte netleştiririz.</div>' +
@@ -433,6 +433,36 @@ footer.note .wrap{padding-block:22px}
   }
 
   render();
+
+  // Panelden güncel eser listesi (fiyat, satıldı, yeni eser). Ulaşılamazsa yukarıdaki liste kalır.
+  function esc(v){ return String(v == null ? "" : v).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
+  (function syncFromPanel(){
+    if(!window.fetch) return;
+    var ctl = window.AbortController ? new AbortController() : null;
+    var timer = setTimeout(function(){ if(ctl) ctl.abort(); }, 5000);
+    fetch("https://yonetim.nadireser.com.tr/api/works.json", ctl ? {signal: ctl.signal} : {})
+      .then(function(r){ if(!r.ok) throw new Error("http"); return r.json(); })
+      .then(function(list){
+        clearTimeout(timer);
+        if(!Array.isArray(list) || !list.length) return;
+        var byId = {}; works.forEach(function(w){ byId[w.id] = w; });
+        var next = [];
+        list.forEach(function(p){
+          var id = String(p.id), base = byId[id] || {};
+          var img = /^https?:\/\//.test(p.img || "") ? p.img : base.img;
+          if(!img || !p.title) return;
+          next.push({
+            id: id, artist: p.artist || base.artist || "", title: p.title,
+            year: p.year == null ? (base.year || "") : String(p.year), medium: p.medium || base.medium || "", size: p.size || base.size || "",
+            price: Number(p.price) || 0, sold: !!p.sold, img: img
+          });
+        });
+        if(!next.length) return;
+        works = next;
+        render();
+      })
+      .catch(function(){});
+  })();
 })();
 </script>
 <script src="https://yonetim.nadireser.com.tr/t.js" defer></script>
