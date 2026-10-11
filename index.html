@@ -368,6 +368,12 @@ footer.note .wrap{padding-block:22px}
   function openSheet(id){
     var w = works.find(function(x){ return x.id === id; });
     if(!w) return;
+    try{
+      if(navigator.doNotTrack!=="1"){
+        var tp="/eser/"+w.id+" "+w.artist+" - "+w.title;
+        navigator.sendBeacon("https://yonetim.nadireser.com.tr/api/hit",new Blob([JSON.stringify({p:tp.slice(0,150),r:document.referrer})],{type:"text/plain"}));
+      }
+    }catch(e){}
     sheetBody.innerHTML =
       '<div class="layout">' +
         '<div class="big-swatch"><img src="' + esc(w.img) + '" alt="' + esc(w.title) + ', ' + esc(w.artist) + '"></div>' +
