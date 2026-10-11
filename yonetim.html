@@ -1,0 +1,237 @@
+<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Nadir Eser Yönetim</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@500;600&family=IBM+Plex+Mono:wght@400;500&family=Jost:wght@400;500;600&display=swap">
+<style>
+:root{--bg:#ffffff;--panel:#f8f6f1;--panel2:#efe9db;--hair:#ddd6c2;--accent:#12809f;--accent-deep:#0b6479;--accent-dim:#e1eff2;--brass:#a97c2f;--hi:#26241f;--md:#5c5748;--lo:#8f8a78;--ok:#2f7a4d;--bad:#a8402f;--onaccent:#fff}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17181a;--panel:#1f2124;--panel2:#292c30;--hair:#3a3d42;--accent:#4fb3d0;--accent-deep:#7cc9de;--accent-dim:#1d3a44;--brass:#d2a550;--hi:#f1eee6;--md:#b8b3a3;--lo:#8a8678;--ok:#6cc18d;--bad:#e5806d;--onaccent:#0d1a1f;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#17181a;--panel:#1f2124;--panel2:#292c30;--hair:#3a3d42;--accent:#4fb3d0;--accent-deep:#7cc9de;--accent-dim:#1d3a44;--brass:#d2a550;--hi:#f1eee6;--md:#b8b3a3;--lo:#8a8678;--ok:#6cc18d;--bad:#e5806d;--onaccent:#0d1a1f;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--hi);font:15px/1.5 Jost,system-ui,sans-serif;padding-inline:16px;padding-block:0 48px}
+.wrap{max-width:1080px;margin:0 auto}
+header{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-block:22px 14px;border-bottom:1px solid var(--hair)}
+h1{font:600 26px/1.1 "Bodoni Moda",serif;margin:0;letter-spacing:.01em;text-wrap:balance}
+.sub{font:400 11px "IBM Plex Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--lo)}
+nav{display:flex;gap:4px;flex-wrap:wrap;padding-block:12px;position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);z-index:5}
+nav button{font:500 13px Jost,sans-serif;letter-spacing:.06em;text-transform:uppercase;background:none;border:0;border-bottom:2px solid transparent;color:var(--md);padding:8px 12px;cursor:pointer}
+nav button[aria-selected=true]{color:var(--accent-deep);border-color:var(--accent)}
+nav .n{font:400 11px "IBM Plex Mono",monospace;background:var(--accent-dim);color:var(--accent-deep);border-radius:9px;padding:1px 7px;margin-left:5px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-block:8px 22px}
+.stat{background:var(--panel);border:1px solid var(--hair);padding:14px 16px}
+.stat b{display:block;font:600 24px "Bodoni Moda",serif;font-variant-numeric:tabular-nums}
+.stat span{font:400 11px "IBM Plex Mono",monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--lo)}
+.bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-block:6px 14px}
+input,select,textarea{font:inherit;color:var(--hi);background:var(--bg);border:1px solid var(--hair);padding:8px 10px;border-radius:0;min-width:0;max-width:100%}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-offset:-1px}
+.btn{font:500 13px Jost,sans-serif;letter-spacing:.06em;text-transform:uppercase;background:var(--accent);color:var(--onaccent);border:1px solid var(--accent);padding:9px 16px;cursor:pointer}
+.btn.ghost{background:none;color:var(--accent-deep)}
+.btn.danger{background:none;color:var(--bad);border-color:var(--bad)}
+.btn.sm{padding:5px 10px;font-size:12px}
+.tw{overflow-x:auto;border:1px solid var(--hair)}
+table{width:100%;border-collapse:collapse;min-width:720px}
+th{font:500 11px "IBM Plex Mono",monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--lo);text-align:left;padding:10px 12px;background:var(--panel);border-bottom:1px solid var(--hair)}
+td{padding:10px 12px;border-bottom:1px solid var(--hair);vertical-align:top}
+tr:last-child td{border-bottom:0}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+.lot{font:400 12px "IBM Plex Mono",monospace;color:var(--brass)}
+.t{font:600 15px "Bodoni Moda",serif}
+.m{color:var(--md);font-size:13px}
+.pill{display:inline-block;font:500 11px "IBM Plex Mono",monospace;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border:1px solid var(--hair);color:var(--md);background:var(--panel)}
+.pill.ok{color:var(--ok);border-color:var(--ok)}.pill.bad{color:var(--bad);border-color:var(--bad)}.pill.acc{color:var(--accent-deep);border-color:var(--accent);background:var(--accent-dim)}
+.board{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;align-items:start}
+.col{background:var(--panel);border:1px solid var(--hair);padding:10px;min-width:0}
+.col h3{font:500 11px "IBM Plex Mono",monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--lo);margin:2px 0 10px;display:flex;justify-content:space-between}
+.card{background:var(--bg);border:1px solid var(--hair);padding:10px 12px;margin-bottom:8px;cursor:pointer;overflow-wrap:anywhere}
+.card:hover{border-color:var(--accent)}
+.card .t{font-size:14px}
+dialog{border:1px solid var(--hair);background:var(--bg);color:var(--hi);padding:0;width:min(560px,calc(100vw - 32px));max-height:calc(100vh - 32px);overflow:auto}
+dialog::backdrop{background:rgba(0,0,0,.45)}
+form{padding:20px;display:grid;gap:12px}
+form h2{font:600 22px "Bodoni Moda",serif;margin:0}
+label{display:grid;gap:4px;font:500 11px "IBM Plex Mono",monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--lo)}
+label input,label select,label textarea{font:400 15px Jost,sans-serif;text-transform:none;letter-spacing:0;color:var(--hi);width:100%}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:480px){.row2{grid-template-columns:1fr}}
+.acts{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;margin-top:4px}
+.empty{padding:28px;text-align:center;color:var(--lo);border:1px dashed var(--hair)}
+.note{background:var(--accent-dim);color:var(--accent-deep);padding:10px 14px;margin-bottom:14px;font-size:14px}
+pre{background:var(--panel);border:1px solid var(--hair);padding:12px;overflow:auto;max-height:260px;font:400 12px/1.5 "IBM Plex Mono",monospace;margin:0}
+.pos{color:var(--ok)}.neg{color:var(--bad)}
+.toast{position:fixed;bottom:calc(16px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:var(--hi);color:var(--bg);padding:8px 16px;font-size:13px;z-index:20}
+</style></head><body>
+
+<div class="wrap">
+<header><div><div class="sub">Yönetim Paneli</div><h1>Nadir Eser</h1></div><div class="sub" id="conn">bağlanıyor…</div></header>
+<nav role="tablist" id="tabs"></nav>
+<main id="view"></main>
+</div>
+
+<dialog id="dlg"><form id="frm" method="dialog"></form></dialog>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+(function(){
+"use strict";
+var STAGES=["İlk görüşme","Teklif verildi","Pazarlık","Satın alındı","Sitede yayında","Satıldı"];
+var INQ=["Yeni","Yanıtlandı","Kapandı"];
+var S={works:[],deals:[],inqs:[],tab:"ozet",q:"",db:null,canWrite:true,loaded:{}};
+var TABS=[["ozet","Özet"],["eserler","Eserler"],["alim","Alım takibi"],["talepler","Talepler"],["yayin","Yedek / Aktar"]];
+var $=function(id){return document.getElementById(id)};
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+function tl(n){return n==null||n===""||isNaN(n)?"—":Number(n).toLocaleString("tr-TR")+" ₺"}
+function num(v){var n=parseFloat(String(v).replace(/\./g,"").replace(",","."));return isNaN(n)?null:n}
+function toast(m){var t=$("toast");t.textContent=m;t.hidden=false;clearTimeout(toast.h);toast.h=setTimeout(function(){t.hidden=true},2200)}
+function today(){return new Date().toISOString().slice(0,10)}
+
+function col(n){return S.db.collection(n)}
+function save(c,id,data){if(!S.db)return Promise.resolve();return (id?col(c).doc(id).set(data):col(c).add(data)).catch(function(e){toast("Kaydedilemedi: "+(e&&e.message||e))})}
+function patch(c,id,d){return col(c).doc(id).update(d).catch(function(e){toast("Kaydedilemedi: "+(e&&e.message||e))})}
+function del(c,id){return col(c).doc(id).delete().catch(function(e){toast("Silinemedi: "+(e&&e.message||e))})}
+
+function sub(name,key){
+  col(name).onSnapshot(function(snap){
+    S[key]=snap.docs.map(function(d){var x=d.data()||{};x._id=d.id;return x});
+    S.loaded[key]=true;render();
+  },function(e){$("conn").textContent="bağlantı hatası";});
+}
+
+function render(){
+  var nav=$("tabs");
+  var cnt={eserler:S.works.length,alim:S.deals.filter(function(d){return d.stage!=="Satıldı"}).length,talepler:S.inqs.filter(function(i){return i.status==="Yeni"}).length};
+  nav.innerHTML=TABS.map(function(t){return '<button role="tab" data-t="'+t[0]+'" aria-selected="'+(S.tab===t[0])+'">'+t[1]+(cnt[t[0]]?'<span class="n">'+cnt[t[0]]+'</span>':'')+'</button>'}).join("");
+  var v=$("view");
+  v.innerHTML=({ozet:vOzet,eserler:vEserler,alim:vAlim,talepler:vTalepler,yayin:vYayin})[S.tab]();
+}
+
+function profit(d){var b=num(d.buyPrice),s=num(d.sellPrice);return(b!=null&&s!=null)?s-b:null}
+
+function vOzet(){
+  var avail=S.works.filter(function(w){return !w.sold});
+  var sold=S.works.filter(function(w){return w.sold});
+  var stock=avail.reduce(function(a,w){return a+(num(w.price)||0)},0);
+  var cost=avail.reduce(function(a,w){return a+(num(w.buyPrice)||0)},0);
+  var rev=sold.reduce(function(a,w){return a+(num(w.soldPrice!=null?w.soldPrice:w.price)||0)},0);
+  var realized=sold.reduce(function(a,w){var p=num(w.soldPrice!=null?w.soldPrice:w.price),b=num(w.buyPrice);return a+((p!=null&&b!=null)?p-b:0)},0);
+  var open=S.deals.filter(function(d){return d.stage!=="Satıldı"});
+  var newI=S.inqs.filter(function(i){return i.status==="Yeni"});
+  var h='<div class="stats">'+
+   st("Sitedeki eser",avail.length+" / "+S.works.length)+st("Stok satış değeri",tl(stock))+st("Stok maliyeti",cost?tl(cost):"—")+st("Beklenen kâr",cost?tl(stock-cost):"—")+st("Satış cirosu",tl(rev))+st("Gerçekleşen kâr",tl(realized))+st("Açık görüşme",open.length)+st("Yeni talep",newI.length)+'</div>';
+  if(!S.works.length&&S.loaded.works)h+='<div class="empty">Henüz eser yok. “Eserler” sekmesinden ekleyin.</div>';
+  h+='<h3 class="sub" style="margin:0 0 8px">Son talepler</h3>'+(newI.length?newI.slice(0,5).map(function(i){return '<div class="card" data-open="inq" data-id="'+i._id+'"><span class="t">'+esc(i.from||"Adsız")+'</span> <span class="m">· '+esc(i.work||"")+'</span><div class="m">'+esc((i.message||"").slice(0,120))+'</div></div>'}).join(""):'<div class="empty">Yeni talep yok.</div>');
+  return h;
+}
+function st(l,v){return '<div class="stat"><b>'+esc(v)+'</b><span>'+l+'</span></div>'}
+
+function vEserler(){
+  var q=S.q.toLowerCase();
+  var list=S.works.filter(function(w){return !q||(w.artist+" "+w.title+" "+w.id).toLowerCase().indexOf(q)>-1}).sort(function(a,b){return (num(a.id)||0)-(num(b.id)||0)});
+  var h='<div class="bar"><input id="q" placeholder="Sanatçı, eser veya lot ara" value="'+esc(S.q)+'" style="flex:1;min-width:200px"><button class="btn" data-act="newwork">+ Eser ekle</button></div>';
+  if(!list.length)return h+'<div class="empty">Eser bulunamadı.</div>';
+  h+='<div class="tw"><table><thead><tr><th>Lot</th><th>Eser</th><th>Teknik / ölçü</th><th class="num">Alış</th><th class="num">Satış fiyatı</th><th>Durum</th><th></th></tr></thead><tbody>';
+  list.forEach(function(w){
+    h+='<tr><td class="lot">#'+esc(w.id)+'</td><td><div class="t">'+esc(w.title)+'</div><div class="m">'+esc(w.artist)+(w.year?' · '+esc(w.year):'')+'</div></td><td class="m">'+esc(w.medium)+'<br>'+esc(w.size)+'</td><td class="num">'+tl(w.buyPrice)+'</td><td class="num">'+tl(w.price)+'</td><td>'+(w.sold?'<span class="pill bad">Satıldı</span>':'<span class="pill ok">Satışta</span>')+'</td><td style="white-space:nowrap"><button class="btn ghost sm" data-act="togsold" data-id="'+w._id+'">'+(w.sold?'Geri al':'Satıldı')+'</button> <button class="btn ghost sm" data-act="editwork" data-id="'+w._id+'">Düzenle</button></td></tr>';
+  });
+  return h+'</tbody></table></div>';
+}
+
+function vAlim(){
+  var h='<div class="bar"><button class="btn" data-act="newdeal">+ Yeni görüşme</button><span class="m">Kartı açmak için tıklayın; aşamayı kart içinden değiştirin.</span></div><div class="board">';
+  STAGES.forEach(function(s){
+    var items=S.deals.filter(function(d){return (d.stage||STAGES[0])===s});
+    h+='<div class="col"><h3><span>'+s+'</span><span>'+items.length+'</span></h3>';
+    items.forEach(function(d){var p=profit(d);h+='<div class="card" data-act="editdeal" data-id="'+d._id+'"><div class="t">'+esc(d.work||"Eser belirtilmedi")+'</div><div class="m">'+esc(d.collector||"")+'</div><div class="m">'+(d.agreed?'Anlaşılan: '+tl(d.agreed):d.offer?'Teklif: '+tl(d.offer):'')+'</div>'+(p!=null?'<div class="m '+(p>=0?'pos':'neg')+'">Kâr: '+tl(p)+'</div>':'')+'</div>'});
+    if(!items.length)h+='<div class="m" style="padding:6px 2px">—</div>';
+    h+='</div>';
+  });
+  return h+'</div>';
+}
+
+function vTalepler(){
+  var h='<div class="bar"><button class="btn" data-act="newinq">+ Talep kaydet</button><span class="m">info@nadireser.com.tr’ye gelen alıcı maillerini buraya not edin.</span></div>';
+  if(!S.inqs.length)return h+'<div class="empty">Henüz talep yok.</div>';
+  var list=S.inqs.slice().sort(function(a,b){return String(b.date||"").localeCompare(String(a.date||""))});
+  h+='<div class="tw"><table><thead><tr><th>Tarih</th><th>Kimden</th><th>Eser</th><th>Mesaj</th><th>Durum</th></tr></thead><tbody>';
+  list.forEach(function(i){h+='<tr style="cursor:pointer" data-act="editinq" data-id="'+i._id+'"><td class="m">'+esc(i.date||"")+'</td><td>'+esc(i.from||"")+'<div class="m">'+esc(i.contact||"")+'</div></td><td>'+esc(i.work||"")+'</td><td class="m">'+esc((i.message||"").slice(0,90))+'</td><td><span class="pill '+(i.status==="Yeni"?'acc':i.status==="Kapandı"?'':'ok')+'">'+esc(i.status||"Yeni")+'</span></td></tr>'});
+  return h+'</tbody></table></div>';
+}
+
+function worksJson(){
+  return JSON.stringify(S.works.slice().sort(function(a,b){return (num(b.id)||0)-(num(a.id)||0)}).map(function(w){return {id:w.id,artist:w.artist,title:w.title,year:w.year,medium:w.medium,size:w.size,price:num(w.price),sold:!!w.sold,img:w.img||("images/lot-"+w.id+".jpg")}}),null,2);
+}
+function vYayin(){
+  return '<div class="note">Veriler yalnızca bu tarayıcıda saklanır (başka cihazda görünmez). PIN hafif bir korumadır, gerçek güvenlik değildir. Tarayıcı verisini silmeden önce yedek alın. Eser listesi değişince aşağıdaki JSON’u Claude’a yapıştırıp “siteyi güncelle” deyin.</div><div class="bar"><button class="btn" data-act="copyjson">JSON’u kopyala</button><span class="m">'+S.works.length+' eser</span></div><pre id="json">'+esc(worksJson())+'</pre>';
+}
+
+function open(title,fields,vals,onSave,onDelete){
+  var f=$("frm");
+  f.innerHTML='<h2>'+title+'</h2>'+fields.map(function(x){
+    var v=vals[x.k]==null?"":vals[x.k];
+    var inp=x.t==="select"?'<select name="'+x.k+'">'+x.o.map(function(o){return '<option'+(o===v?' selected':'')+'>'+esc(o)+'</option>'}).join("")+'</select>':x.t==="area"?'<textarea name="'+x.k+'" rows="3">'+esc(v)+'</textarea>':'<input name="'+x.k+'" value="'+esc(v)+'"'+(x.req?' required':'')+(x.ro?' readonly':'')+'>';
+    return '<label>'+x.l+inp+'</label>';
+  }).join("")+'<div class="acts">'+(onDelete?'<button type="button" class="btn danger" id="d-del">Sil</button>':'')+'<button type="button" class="btn ghost" id="d-x">Vazgeç</button><button class="btn" type="submit">Kaydet</button></div>';
+  var d=$("dlg");
+  f.onsubmit=function(e){e.preventDefault();var o={};fields.forEach(function(x){o[x.k]=f.elements[x.k].value.trim()});Promise.resolve(onSave(o)).then(function(){d.close();toast("Kaydedildi")})};
+  $("d-x").onclick=function(){d.close()};
+  if(onDelete){var b=$("d-del");b.onclick=function(){if(b.dataset.s!=="1"){b.dataset.s="1";b.textContent="Emin misiniz? Tekrar basın";return}Promise.resolve(onDelete()).then(function(){d.close()})}}
+  d.showModal();
+}
+
+function byId(list,id){return list.filter(function(x){return x._id===id})[0]}
+var WF=[{k:"id",l:"Lot no",req:1},{k:"artist",l:"Sanatçı",req:1},{k:"title",l:"Eser adı",req:1},{k:"year",l:"Yıl"},{k:"medium",l:"Teknik"},{k:"size",l:"Ölçü"},{k:"buyPrice",l:"Alış fiyatı (₺)"},{k:"price",l:"Satış fiyatı (₺)",req:1}];
+function wsave(old){return function(o){var id=old?old._id:o.id;var rec=Object.assign({},old||{},o);delete rec._id;rec.price=num(o.price);rec.buyPrice=num(o.buyPrice);rec.sold=old?!!old.sold:false;rec.id=id;if(!rec.img)rec.img="images/lot-"+id+".jpg";return save("works",id,rec)}}
+
+document.addEventListener("click",function(e){
+  var t=e.target.closest("[data-t],[data-act],[data-open]");if(!t)return;
+  if(t.dataset.t){S.tab=t.dataset.t;render();return}
+  if(t.dataset.open==="inq"){S.tab="talepler";render();return}
+  var a=t.dataset.act,id=t.dataset.id;
+  if(a==="newwork")open("Yeni eser",WF,{},wsave(null));
+  else if(a==="editwork"){var w=byId(S.works,id);open("Eseri düzenle",WF.map(function(f){return f.k==="id"?Object.assign({ro:1},f):f}),w,wsave(w),function(){return del("works",id)})}
+  else if(a==="togsold"){var w2=byId(S.works,id);var up={sold:!w2.sold};if(up.sold)up.soldPrice=w2.price;patch("works",id,up)}
+  else if(a==="newdeal")open("Yeni görüşme",DF,{stage:STAGES[0]},function(o){o.updated=today();return save("deals",null,o)});
+  else if(a==="editdeal"){var dd=byId(S.deals,id);open("Görüşme",DF,dd,function(o){o.updated=today();return patch("deals",id,o)},function(){return del("deals",id)})}
+  else if(a==="newinq")open("Yeni talep",IF,{status:"Yeni",date:today()},function(o){return save("inqs",null,o)});
+  else if(a==="editinq"){var ii=byId(S.inqs,id);open("Talep",IF,ii,function(o){return patch("inqs",id,o)},function(){return del("inqs",id)})}
+  else if(a==="copyjson"){var tx=worksJson();(navigator.clipboard?navigator.clipboard.writeText(tx):Promise.reject()).then(function(){toast("Kopyalandı")}).catch(function(){var r=document.createRange();r.selectNodeContents($("json"));var s=getSelection();s.removeAllRanges();s.addRange(r);toast("Metin seçildi; kopyalayın")})}
+});
+document.addEventListener("input",function(e){if(e.target.id==="q"){S.q=e.target.value;var p=e.target.selectionStart;render();var q=$("q");q.focus();q.setSelectionRange(p,p)}});
+
+var DF=[{k:"collector",l:"Koleksiyoner",req:1},{k:"contact",l:"İletişim (mail / telefon)"},{k:"work",l:"Eser / sanatçı"},{k:"stage",l:"Aşama",t:"select",o:STAGES},{k:"offer",l:"Bizim teklif (₺)"},{k:"agreed",l:"Anlaşılan alış (₺)"},{k:"buyPrice",l:"Alış maliyeti (₺)"},{k:"sellPrice",l:"Hedef satış (₺)"},{k:"notes",l:"Notlar",t:"area"}];
+var IF=[{k:"date",l:"Tarih"},{k:"from",l:"Kimden",req:1},{k:"contact",l:"Mail"},{k:"work",l:"İlgilendiği eser"},{k:"message",l:"Mesaj",t:"area"},{k:"status",l:"Durum",t:"select",o:INQ}];
+
+
+var KEY="nadireser-admin-v1",SEED=[{"id": "421", "artist": "Gencay Kasapçı", "title": "Çiçek", "year": "1983", "medium": "Kağıt üzerine karışık teknik", "size": "50 × 40 cm", "price": 1000, "sold": false, "img": "images/lot-421.jpg"}, {"id": "418", "artist": "Komet", "title": "Figür", "year": "1985", "medium": "Ahşap üzerine yağlıboya", "size": "24 × 16 cm", "price": 4000, "sold": false, "img": "images/lot-418.jpg"}, {"id": "417", "artist": "Feyhaman Duran", "title": "Çanakkale testi ve portakallar", "year": "1962", "medium": "", "size": "38 × 48 cm", "price": 16000, "sold": false, "img": "images/lot-417.jpg"}, {"id": "415", "artist": "Utku Varlık", "title": "İsimsiz", "year": "", "medium": "Tuval üzerine yağlıboya", "size": "60 × 60 cm", "price": 4000, "sold": false, "img": "images/lot-415.jpg"}, {"id": "392", "artist": "Zühtü Müridoğlu", "title": "Balerin", "year": "", "medium": "Bronz, 5/9", "size": "56 cm", "price": 10000, "sold": false, "img": "images/lot-392.jpg"}, {"id": "45", "artist": "Salim Özüdoğru", "title": "Kız Kulesi", "year": "", "medium": "Tuval üzerine yağlıboya", "size": "28 × 16 cm", "price": 700, "sold": false, "img": "images/lot-45.jpg"}, {"id": "31", "artist": "Ömer Kaleşi", "title": "Küçük Derviş", "year": "2005", "medium": "Tuval üzerine yağlıboya", "size": "33 × 19 cm", "price": 5000, "sold": false, "img": "images/lot-31.jpg"}, {"id": "30", "artist": "Ömer Kaleşi", "title": "Tek Kadın", "year": "2001", "medium": "Tuval üzerine yağlıboya", "size": "38 × 57 cm", "price": 6000, "sold": false, "img": "images/lot-30.jpg"}, {"id": "28", "artist": "Ayhan Türker", "title": "Kabataş Balıkçı Barınağı", "year": "2003", "medium": "Tuval üzerine yağlıboya", "size": "53 × 74 cm", "price": 7500, "sold": false, "img": "images/lot-28.jpg"}, {"id": "18", "artist": "Salim Özüdoğru", "title": "İsimsiz", "year": "", "medium": "Tuval üzerine yağlıboya", "size": "56 × 45 cm", "price": 800, "sold": false, "img": "images/lot-18.jpg"}, {"id": "17", "artist": "Elif Naci", "title": "İsimsiz", "year": "", "medium": "Tuval üzerine yağlıboya", "size": "74 × 53 cm", "price": 11000, "sold": false, "img": "images/lot-17.jpg"}];
+var store;try{store=JSON.parse(localStorage.getItem(KEY)||"null")}catch(e){store=null}
+if(!store){store={works:{},deals:{},inqs:{}};SEED.forEach(function(w){store.works[w.id]=w})}
+var subs={works:[],deals:[],inqs:[]};
+function persist(){try{localStorage.setItem(KEY,JSON.stringify(store))}catch(e){toast("Tarayıcı kaydı kapalı")}}
+function emit(n){var docs=Object.keys(store[n]).map(function(k){return{id:k,data:function(){return store[n][k]}}});subs[n].forEach(function(f){f({docs:docs})})}
+function mk(n){return{
+ onSnapshot:function(f){subs[n].push(f);setTimeout(function(){emit(n)},0)},
+ add:function(d){var id="d"+Date.now().toString(36)+Math.random().toString(36).slice(2,5);store[n][id]=d;persist();emit(n);return Promise.resolve()},
+ doc:function(id){return{
+  set:function(d){store[n][id]=d;persist();emit(n);return Promise.resolve()},
+  update:function(d){store[n][id]=Object.assign({},store[n][id],d);persist();emit(n);return Promise.resolve()},
+  delete:function(){delete store[n][id];persist();emit(n);return Promise.resolve()}}}}}
+S.db={collection:mk};
+$("conn").textContent="bu tarayıcıda kayıtlı";
+function boot(){render();sub("works","works");sub("deals","deals");sub("inqs","inqs")}
+// PIN gate (hafif koruma)
+function sha(s){var b=new TextEncoder().encode(s);return crypto.subtle.digest("SHA-256",b).then(function(h){return Array.from(new Uint8Array(h)).map(function(x){return x.toString(16).padStart(2,"0")}).join("")})}
+function gate(){
+  var main=document.querySelector(".wrap");var stored=null;try{stored=localStorage.getItem(KEY+"-pin")}catch(e){}
+  try{if(sessionStorage.getItem(KEY+"-ok")==="1"&&stored){boot();return}}catch(e){}
+  main.hidden=true;
+  var g=document.createElement("div");g.style.cssText="max-width:360px;margin:15vh auto;display:grid;gap:12px;text-align:center";
+  g.innerHTML='<div class="sub">Yönetim</div><h1>Nadir Eser</h1><p class="m">'+(stored?"PIN kodunu gir":"İlk giriş: bu tarayıcı için bir PIN belirle")+'</p><input id="pin" type="password" inputmode="numeric" autocomplete="off" placeholder="PIN"><button class="btn" id="pgo">'+(stored?"Giriş":"Kaydet ve gir")+'</button><p class="m" id="perr"></p>';
+  document.body.appendChild(g);
+  $("pgo").onclick=function(){var v=$("pin").value;if(v.length<4){$("perr").textContent="En az 4 karakter";return}
+   sha(v).then(function(h){
+    if(stored&&h!==stored){$("perr").textContent="Yanlış PIN";return}
+    try{if(!stored)localStorage.setItem(KEY+"-pin",h);sessionStorage.setItem(KEY+"-ok","1")}catch(e){}
+    g.remove();main.hidden=false;boot()})};
+  $("pin").addEventListener("keydown",function(e){if(e.key==="Enter")$("pgo").click()});
+}
+gate();
+})();
+</script>
+</body></html>
