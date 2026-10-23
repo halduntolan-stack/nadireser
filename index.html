@@ -275,6 +275,11 @@ footer.note .wrap{padding-block:22px}
       price:1800, sold:false, img:"lot-2.jpg"
     },
     {
+      id:"3", artist:"Yavuz Tanyeli", title:"Cazcılar",
+      year:"2019", medium:"Tuval üzerine yağlıboya", size:"148x148 cm",
+      price:12500, sold:false, img:"lot-3.jpg"
+    },
+    {
       id:"17", artist:"Elif Naci", title:"İsimsiz",
       year:"", medium:"Tuval üzerine yağlıboya", size:"74 × 53 cm",
       price:10000, sold:false, img:"lot-17.jpg"
@@ -441,6 +446,37 @@ footer.note .wrap{padding-block:22px}
   render();
 
   function esc(v){ return String(v == null ? "" : v).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
+
+  // Panelden güncel eser listesi (fiyat, satıldı, yeni eser, gizli). Ulaşılamazsa yukarıdaki liste kalır.
+  var HIDDEN = ["30","31"]; // sitede gösterilmeyecek eser numaraları (panelde kayıtlı kalabilir)
+  (function syncFromPanel(){
+    if(!window.fetch) return;
+    var ctl = window.AbortController ? new AbortController() : null;
+    var timer = setTimeout(function(){ if(ctl) ctl.abort(); }, 5000);
+    fetch("https://yonetim.nadireser.com.tr/api/works.json", ctl ? {signal: ctl.signal} : {})
+      .then(function(r){ if(!r.ok) throw new Error("http"); return r.json(); })
+      .then(function(list){
+        clearTimeout(timer);
+        if(!Array.isArray(list) || !list.length) return;
+        var byId = {}; works.forEach(function(w){ byId[w.id] = w; });
+        var next = [];
+        list.forEach(function(p){
+          if(HIDDEN.indexOf(String(p.id))>-1) return;
+          var id = String(p.id), base = byId[id] || {};
+          var img = /^https?:\/\//.test(p.img || "") ? p.img : base.img;
+          if(!img || !p.title) return;
+          next.push({
+            id: id, artist: p.artist || base.artist || "", title: p.title,
+            year: p.year == null ? (base.year || "") : String(p.year), medium: p.medium || base.medium || "", size: p.size || base.size || "",
+            price: Number(p.price) || 0, sold: !!p.sold, img: img
+          });
+        });
+        if(!next.length) return;
+        works = next;
+        render();
+      })
+      .catch(function(){});
+  })();
 })();
 </script>
 <script src="https://yonetim.nadireser.com.tr/t.js" defer></script>
