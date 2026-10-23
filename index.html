@@ -265,29 +265,24 @@ footer.note .wrap{padding-block:22px}
 
   var works = [
     {
-      id:"421", artist:"Gencay Kasapçı", title:"Çiçek",
-      year:"1983", medium:"Kağıt üzerine karışık teknik", size:"50 × 40 cm",
-      price:1000, sold:false, img:"lot-421.jpg"
+      id:"1", artist:"Eyüp Ataş", title:"Olası",
+      year:"2018", medium:"Tuval üzerine yağlıboya", size:"100x80 cm",
+      price:2000, sold:false, img:"lot-1.jpg"
     },
     {
-      id:"418", artist:"Komet", title:"Figür",
-      year:"1985", medium:"Ahşap üzerine yağlıboya", size:"24 × 16 cm",
-      price:4000, sold:false, img:"lot-418.jpg"
+      id:"2", artist:"Sema Maşkılı", title:"Figürler",
+      year:"2018", medium:"Kağıt üzerine yağlıboya", size:"85x140 cm",
+      price:1800, sold:false, img:"lot-2.jpg"
     },
     {
-      id:"417", artist:"Feyhaman Duran", title:"Çanakkale testi ve portakallar",
-      year:"1962", medium:"", size:"38 × 48 cm",
-      price:16000, sold:false, img:"lot-417.jpg"
+      id:"17", artist:"Elif Naci", title:"İsimsiz",
+      year:"", medium:"Tuval üzerine yağlıboya", size:"74 × 53 cm",
+      price:10000, sold:false, img:"lot-17.jpg"
     },
     {
-      id:"415", artist:"Utku Varlık", title:"İsimsiz",
-      year:"", medium:"Tuval üzerine yağlıboya", size:"60 × 60 cm",
-      price:4000, sold:false, img:"lot-415.jpg"
-    },
-    {
-      id:"392", artist:"Zühtü Müridoğlu", title:"Balerin",
-      year:"", medium:"Bronz, 5/9", size:"56 cm",
-      price:10000, sold:false, img:"lot-392.jpg"
+      id:"18", artist:"Salim Özüdoğru", title:"İsimsiz",
+      year:"", medium:"Tuval üzerine yağlıboya", size:"56 × 45 cm",
+      price:600, sold:false, img:"lot-18.jpg"
     },
     {
       id:"45", artist:"Salim Özüdoğru", title:"Kız Kulesi",
@@ -295,29 +290,34 @@ footer.note .wrap{padding-block:22px}
       price:700, sold:false, img:"lot-45.jpg"
     },
     {
-      id:"31", artist:"Ömer Kaleşi", title:"Küçük Derviş",
-      year:"2005", medium:"Tuval üzerine yağlıboya", size:"33 × 19 cm",
-      price:5000, sold:false, img:"lot-31.jpg"
-    },
-    {
-      id:"30", artist:"Ömer Kaleşi", title:"Tek Kadın",
-      year:"2001", medium:"Tuval üzerine yağlıboya", size:"38 × 57 cm",
-      price:6000, sold:false, img:"lot-30.jpg"
-    },
-    {
       id:"28", artist:"Ayhan Türker", title:"Kabataş Balıkçı Barınağı",
       year:"2003", medium:"Tuval üzerine yağlıboya", size:"53 × 74 cm",
-      price:7500, sold:false, img:"lot-28.jpg"
+      price:6500, sold:false, img:"lot-28.jpg"
     },
     {
-      id:"18", artist:"Salim Özüdoğru", title:"İsimsiz",
-      year:"", medium:"Tuval üzerine yağlıboya", size:"56 × 45 cm",
-      price:800, sold:false, img:"lot-18.jpg"
+      id:"392", artist:"Zühtü Müridoğlu", title:"Balerin",
+      year:"", medium:"Bronz, 5/9", size:"56 cm",
+      price:9000, sold:false, img:"lot-392.jpg"
     },
     {
-      id:"17", artist:"Elif Naci", title:"İsimsiz",
-      year:"", medium:"Tuval üzerine yağlıboya", size:"74 × 53 cm",
-      price:11000, sold:false, img:"lot-17.jpg"
+      id:"415", artist:"Utku Varlık", title:"İsimsiz",
+      year:"", medium:"Tuval üzerine yağlıboya", size:"60 × 60 cm",
+      price:4000, sold:true, img:"lot-415.jpg"
+    },
+    {
+      id:"417", artist:"Feyhaman Duran", title:"Çanakkale testi ve portakallar",
+      year:"1962", medium:"", size:"38 × 48 cm",
+      price:14500, sold:false, img:"lot-417.jpg"
+    },
+    {
+      id:"418", artist:"Komet", title:"Figür",
+      year:"1985", medium:"Ahşap üzerine yağlıboya", size:"24 × 16 cm",
+      price:3500, sold:true, img:"lot-418.jpg"
+    },
+    {
+      id:"421", artist:"Gencay Kasapçı", title:"Çiçek",
+      year:"1983", medium:"Kağıt üzerine karışık teknik", size:"50 × 40 cm",
+      price:1000, sold:false, img:"lot-421.jpg"
     }
   ];
 
@@ -440,35 +440,7 @@ footer.note .wrap{padding-block:22px}
 
   render();
 
-  // Panelden güncel eser listesi (fiyat, satıldı, yeni eser). Ulaşılamazsa yukarıdaki liste kalır.
   function esc(v){ return String(v == null ? "" : v).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
-  (function syncFromPanel(){
-    if(!window.fetch) return;
-    var ctl = window.AbortController ? new AbortController() : null;
-    var timer = setTimeout(function(){ if(ctl) ctl.abort(); }, 5000);
-    fetch("https://yonetim.nadireser.com.tr/api/works.json", ctl ? {signal: ctl.signal} : {})
-      .then(function(r){ if(!r.ok) throw new Error("http"); return r.json(); })
-      .then(function(list){
-        clearTimeout(timer);
-        if(!Array.isArray(list) || !list.length) return;
-        var byId = {}; works.forEach(function(w){ byId[w.id] = w; });
-        var next = [];
-        list.forEach(function(p){
-          var id = String(p.id), base = byId[id] || {};
-          var img = /^https?:\/\//.test(p.img || "") ? p.img : base.img;
-          if(!img || !p.title) return;
-          next.push({
-            id: id, artist: p.artist || base.artist || "", title: p.title,
-            year: p.year == null ? (base.year || "") : String(p.year), medium: p.medium || base.medium || "", size: p.size || base.size || "",
-            price: Number(p.price) || 0, sold: !!p.sold, img: img
-          });
-        });
-        if(!next.length) return;
-        works = next;
-        render();
-      })
-      .catch(function(){});
-  })();
 })();
 </script>
 <script src="https://yonetim.nadireser.com.tr/t.js" defer></script>
