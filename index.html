@@ -337,7 +337,9 @@ footer.note .wrap{padding-block:22px}
   function render(){
     catalog.innerHTML = "";
     var available = 0;
-    works.forEach(function(w){
+    // Satılan eserler listenin en altında
+    var ordered = works.filter(function(w){ return !w.sold; }).concat(works.filter(function(w){ return w.sold; }));
+    ordered.forEach(function(w){
       if(!w.sold) available++;
       var card = document.createElement("article");
       card.className = "card";
