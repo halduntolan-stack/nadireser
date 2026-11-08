@@ -75,6 +75,8 @@ nav.main a.active,nav.main a:hover{color:var(--turquoise); border-bottom-color:v
 .btn:hover{background:var(--turquoise-deep)}
 .btn:focus-visible{outline:2px solid var(--turquoise-deep); outline-offset:2px}
 .btn[disabled]{background:var(--hair); color:var(--text-lo); cursor:not-allowed}
+.btn.wa{background:#1f8a4c; color:#fff}
+.btn.wa:hover{background:#176b3a}
 .btn.ghost{background:transparent; color:var(--text-hi); border:1px solid var(--hair)}
 .btn.ghost:hover{background:var(--panel)}
 
@@ -248,7 +250,7 @@ footer.note .wrap{padding-block:22px}
     <h2>İletişim</h2>
     <p>Satın almak istediğiniz eseri e-posta ile bildirin; ödeme (havale / elden teslim) ve teslimat detaylarını birlikte netleştirelim.</p>
     <div class="copy-line"><span>info@nadireser.com.tr</span><button type="button" data-copy="info@nadireser.com.tr">Kopyala</button></div>
-    <div><a class="btn" href="mailto:info@nadireser.com.tr?subject=Nadir%20Eser%20-%20Eser%20talebi">E-posta ile ulaşın</a></div>
+    <div style="display:flex; gap:10px; flex-wrap:wrap"><a class="btn" href="mailto:info@nadireser.com.tr?subject=Nadir%20Eser%20-%20Eser%20talebi">E-posta ile ulaşın</a><a class="btn wa" href="#" data-wa="Merhaba, Nadir Eser koleksiyonu hakkında bilgi almak istiyorum.">WhatsApp ile yazın</a></div>
   </div>
 </section>
 <footer class="note"><div class="wrap">© Nadir Eser</div></footer>
@@ -394,7 +396,7 @@ footer.note .wrap{padding-block:22px}
           '</dl>' +
           '<div class="price2">' + priceStr(w.price) + '</div>' +
           '<div class="how">Satın almak için aşağıdaki butonla bize e-posta gönderin; ödeme ve teslimat detaylarını birlikte netleştiririz.</div>' +
-          '<div class="contact-row"><a class="btn" href="mailto:info@nadireser.com.tr?subject=' + encodeURIComponent("Satın alma talebi: " + w.artist + " - " + w.title) + '">E-posta ile satın alın</a></div>' +
+          '<div class="contact-row"><a class="btn" href="mailto:info@nadireser.com.tr?subject=' + encodeURIComponent("Satın alma talebi: " + w.artist + " - " + w.title) + '">E-posta ile satın alın</a><a class="btn wa" href="#" data-wa="' + esc("Merhaba, " + w.artist + " - " + w.title + " (lot " + w.id + ") eseri hakkında bilgi almak istiyorum.") + '">WhatsApp ile yazın</a></div>' +
           '<div class="close"><button class="btn ghost" id="sheet-close-btn">Kapat</button></div>' +
         '</div>' +
       '</div>';
@@ -480,6 +482,17 @@ footer.note .wrap{padding-block:22px}
       .catch(function(){});
   })();
 })();
+
+  // WhatsApp düğmeleri: numara sayfada yazı olarak görünmez, tıklanınca açılır
+  (function(){
+    var WA = "905323662713";
+    document.addEventListener("click", function(e){
+      var a = e.target.closest ? e.target.closest("[data-wa]") : null;
+      if(!a) return;
+      e.preventDefault();
+      window.open("https://wa.me/" + WA + "?text=" + encodeURIComponent(a.getAttribute("data-wa")), "_blank", "noopener");
+    });
+  })();
 </script>
 <script src="https://yonetim.nadireser.com.tr/t.js" defer></script>
 </body>
