@@ -1,15 +1,53 @@
 #!/bin/bash
-# Nadir Eser panel güncellemesi
+# Nadir Eser panel güncellemesi (+ otomatik güncelleme kurulumu)
 set -e
 APP=/opt/nadireser-panel
 [ -d "$APP" ] || { echo "Panel kurulu değil"; exit 1; }
+SELF_MD5=$(md5sum "$0" | cut -d' ' -f1)
 TMP=$(mktemp -d)
 sed '1,/^__PAYLOAD__$/d' "$0" | base64 -d > $TMP/u.tgz
 tar -xzf $TMP/u.tgz -C $APP
 chown -R nadirpanel:nadirpanel $APP
+
+# --- Otomatik güncelleme: GitHub'daki u dosyası değişince 5 dakika içinde uygular (kampanya sürerken bekler)
+cat > /usr/local/bin/nadireser-autoupdate <<'AUTO'
+#!/bin/bash
+APP=/opt/nadireser-panel
+URL="https://raw.githubusercontent.com/halduntolan-stack/nadireser/main/u"
+curl -fsSL --max-time 30 "$URL?nocache=$(date +%s)" -o /root/u.new || exit 0
+head -n1 /root/u.new | grep -q '^#!/bin/bash' || exit 0
+NEW=$(md5sum /root/u.new | cut -d' ' -f1)
+OLD=$(cat /root/.u.applied 2>/dev/null || true)
+[ "$NEW" = "$OLD" ] && exit 0
+BUSY=$(cd $APP && node -e "const D=require('better-sqlite3');const d=new D('data/panel.db',{readonly:true});console.log(d.prepare(\"SELECT COUNT(*) c FROM campaigns WHERE status IN ('sending','queued')\").get().c)" 2>/dev/null || echo 1)
+[ "$BUSY" = "0" ] || exit 0
+echo "$(date) uygulaniyor $NEW" >> /var/log/nadireser-autoupdate.log
+bash /root/u.new >> /var/log/nadireser-autoupdate.log 2>&1 || echo "$(date) HATA" >> /var/log/nadireser-autoupdate.log
+AUTO
+chmod +x /usr/local/bin/nadireser-autoupdate
+cat > /etc/systemd/system/nadireser-autoupdate.service <<'UNIT'
+[Unit]
+Description=Nadir Eser panel otomatik guncelleme
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/nadireser-autoupdate
+UNIT
+cat > /etc/systemd/system/nadireser-autoupdate.timer <<'UNIT'
+[Unit]
+Description=Nadir Eser panel otomatik guncelleme (5 dk)
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=5min
+[Install]
+WantedBy=timers.target
+UNIT
+systemctl daemon-reload
+systemctl enable --now nadireser-autoupdate.timer >/dev/null 2>&1 || true
+echo "$SELF_MD5" > /root/.u.applied
+
 systemctl restart nadireser-panel
 sleep 2
-systemctl is-active --quiet nadireser-panel && echo "Güncelleme tamam, panel çalışıyor" || { echo "Servis başlamadı: journalctl -u nadireser-panel -n 50"; exit 1; }
+systemctl is-active --quiet nadireser-panel && echo "Güncelleme tamam, panel çalışıyor (otomatik güncelleme açık)" || { echo "Servis başlamadı: journalctl -u nadireser-panel -n 50"; exit 1; }
 exit 0
 __PAYLOAD__
 H4sIAAAAAAAAA9RbS3Mbt5bOOr8C6dyKmnGzSUq24pB6lCzRN5rIkkqUr5OSFAXsBkmYze420C2K
