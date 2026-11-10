@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://nadireser.com.tr/sitemap.xml
