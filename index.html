@@ -158,7 +158,13 @@ footer.note .wrap{padding-block:22px}
   border:1px solid var(--hair); background:#fff; padding:11px 12px;
   font-family:var(--mono); font-size:0.84rem; min-width:0;
 }
-.thumbs{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}.thumbs img{width:64px;height:64px;object-fit:cover;cursor:pointer;border:1px solid var(--hair)}
+.slides{position:absolute; inset:0; display:flex; overflow-x:auto; scroll-snap-type:x mandatory; scrollbar-width:none; -webkit-overflow-scrolling:touch}
+.slides::-webkit-scrollbar{display:none}
+.card .swatch .slides img, .sheet .big-swatch .slides img{position:static; flex:0 0 100%; width:100%; height:100%; scroll-snap-align:center}
+.sl-btn{position:absolute; top:50%; transform:translateY(-50%); width:36px; height:36px; border:none; border-radius:50%; background:rgba(255,255,255,.85); color:#1d4a3c; font-size:24px; line-height:1; cursor:pointer; z-index:2}
+.sl-prev{left:10px}.sl-next{right:10px}
+.sl-dots{position:absolute; bottom:10px; left:0; right:0; display:flex; justify-content:center; gap:7px; z-index:2}
+.sl-dots i{width:8px; height:8px; border-radius:50%; background:rgba(0,0,0,.28)}.sl-dots i.on{background:#1d4a3c}
 .copy-line span{overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
 .copy-line button{flex:none; background:transparent; border:1px solid var(--hair); padding:5px 10px; font-size:0.72rem; cursor:pointer; color:var(--text-hi)}
 
@@ -341,6 +347,13 @@ footer.note .wrap{padding-block:22px}
 
   function dimsLine(w){ return [w.year, w.medium, w.size].filter(Boolean).join(" · "); }
 
+  function slider(w, where){
+    var imgs = [w.img].concat(w.more || []), alt = esc(w.title) + ', ' + esc(w.artist), ls = where === 'card' ? ' loading="lazy"' : '';
+    if(imgs.length < 2) return '<img src="' + esc(w.img) + '" alt="' + alt + '"' + ls + '>';
+    return '<div class="slides">' + imgs.map(function(u){ return '<img src="' + esc(u) + '" alt="' + alt + '"' + ls + '>'; }).join('') + '</div>' +
+      '<button type="button" class="sl-btn sl-prev" data-slide="-1" aria-label="Önceki görsel">&#8249;</button><button type="button" class="sl-btn sl-next" data-slide="1" aria-label="Sonraki görsel">&#8250;</button>' +
+      '<div class="sl-dots">' + imgs.map(function(u, i){ return '<i' + (i ? '' : ' class="on"') + '></i>'; }).join('') + '</div>';
+  }
   function render(){
     catalog.innerHTML = "";
     var available = 0;
@@ -360,7 +373,7 @@ footer.note .wrap{padding-block:22px}
       card.innerHTML =
         '<div class="swatch' + (w.sold ? ' sold' : '') + '">' +
           '<span class="badge">Sabit Fiyat</span>' +
-          '<img src="' + w.img + '" alt="' + esc(w.title) + ', ' + esc(w.artist) + '" loading="lazy">' +
+          slider(w, 'card') +
         '</div>' +
         '<div class="info">' +
           '<div class="artist">' + esc(w.artist) + '</div>' +
@@ -393,8 +406,7 @@ footer.note .wrap{padding-block:22px}
     }catch(e){}
     sheetBody.innerHTML =
       '<div class="layout">' +
-        '<div><div class="big-swatch"><img id="sheet-main" src="' + esc(w.img) + '" alt="' + esc(w.title) + ', ' + esc(w.artist) + '"></div>' +
-          ((w.more && w.more.length) ? '<div class="thumbs">' + [w.img].concat(w.more).map(function(u){ return '<img data-thumb="' + esc(u) + '" src="' + esc(u) + '" alt="">'; }).join('') + '</div>' : '') + '</div>' +
+        '<div class="big-swatch">' + slider(w, 'sheet') + '</div>' +
         '<div class="txt">' +
           '<div class="artist2">' + esc(w.artist) + '</div>' +
           '<h2 id="sheet-title">' + esc(w.title) + '</h2>' +
@@ -421,6 +433,7 @@ footer.note .wrap{padding-block:22px}
   }
 
   catalog.addEventListener("click", function(e){
+    var sb = e.target.closest("[data-slide]"); if(sb){ slideBy(sb); return; }
     var el = e.target.closest("[data-open]");
     if(el) openSheet(el.getAttribute("data-open"));
   });
@@ -431,12 +444,18 @@ footer.note .wrap{padding-block:22px}
     e.preventDefault();
     openSheet(el.getAttribute("data-open"));
   });
-  sheetBody.addEventListener("click", function(e){
-    var t = e.target.closest("[data-thumb]"), m = document.getElementById("sheet-main");
-    if(t && m) m.src = t.getAttribute("data-thumb");
-  });
+  function slideBy(bt){
+    var sl = bt.parentNode.querySelector(".slides");
+    if(sl) sl.scrollBy({left: sl.clientWidth * Number(bt.getAttribute("data-slide")), behavior: "smooth"});
+  }
+  document.addEventListener("scroll", function(e){
+    var sl = e.target; if(!sl || !sl.classList || !sl.classList.contains("slides")) return;
+    var n = Math.round(sl.scrollLeft / sl.clientWidth), d = sl.parentNode.querySelectorAll(".sl-dots i");
+    for(var i = 0; i < d.length; i++) d[i].className = i === n ? "on" : "";
+  }, true);
   scrim.addEventListener("click", closeSheet);
   sheetBody.addEventListener("click", function(e){
+    var sb = e.target.closest("[data-slide]"); if(sb){ slideBy(sb); return; }
     if(e.target.id === "sheet-close-btn") closeSheet();
   });
   document.addEventListener("click", function(e){

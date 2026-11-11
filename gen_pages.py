@@ -50,7 +50,7 @@ def page(w):
 <header><div class="wrap"><a class="logo" href="/">Nadir <i>Eser</i></a><a class="back" href="/#koleksiyon">← Tüm eserler</a></div></header>
 <main class="wrap">
 <nav class="bc"><a href="/">Nadir Eser</a> › <a href="/#koleksiyon">Koleksiyon</a> › {e(a)}</nav>
-<article class="work"><div class="im{' sold' if sold else ''}"><img src="{e(w['img'])}" alt="{e(a)}, {e(t)}">{"".join(f'<img src="{e(m)}" alt="{e(a)}, {e(t)}" loading="lazy">' for m in w['more'])}</div>
+<article class="work"><div class="im{' sold' if sold else ''}{' multi' if w['more'] else ''}"><img src="{e(w['img'])}" alt="{e(a)}, {e(t)}">{"".join(f'<img src="{e(m)}" alt="{e(a)}, {e(t)}" loading="lazy">' for m in w['more'])}</div>
 <div class="tx"><div class="ar">{e(a)}</div><h1>{e(t)}</h1><dl>{dl}</dl>
 <div class="pr">{'Satıldı' if sold else price(w['price'])}</div>
 <p class="hw">{'Bu eser satılmıştır. Benzer eserler için bize yazabilirsiniz.' if sold else 'Sabit fiyatlı, hemen satın alınabilir. Satın almak için e-posta ya da WhatsApp ile yazın; ödeme ve teslimat detaylarını birlikte netleştirelim.'}</p>
