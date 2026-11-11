@@ -12,7 +12,7 @@ BASE="https://nadireser.com.tr"
 def imgurl(w):
     i=w['img']
     return i if i.startswith('http') else f"{BASE}/lot-{w['id']}.jpg"
-works=[dict(w,img=imgurl(w)) for w in W if str(w['id']) not in HIDDEN]
+works=[dict(w,img=imgurl(w),more=[m for m in (w.get('more') or []) if str(m).startswith('http')]) for w in W if str(w['id']) not in HIDDEN]
 e=lambda s:html.escape(str(s or ''),quote=True)
 def price(n): return "$"+format(int(n),",")
 def meta(w): return " · ".join(x for x in [w.get('year'),w.get('medium'),w.get('size')] if x)
@@ -24,7 +24,7 @@ def page(w):
     ttl=f"{a} - {t} | Nadir Eser"
     sz=fixsize(w['size'])
     desc=f"{a}, \"{t}\"" + (f" ({w['year']})" if w.get('year') else "") + f". {w.get('medium','')}, {sz}. " + ("Satıldı." if sold else f"Sabit fiyat {price(w['price'])}, Nadir Eser'de hemen satın alınabilir.")
-    ld={"@context":"https://schema.org","@type":"Product","name":f"{a} - {t}","image":[w['img']],"description":desc,"brand":{"@type":"Brand","name":a},"category":"Sanat eseri",
+    ld={"@context":"https://schema.org","@type":"Product","name":f"{a} - {t}","image":[w['img']]+w['more'],"description":desc,"brand":{"@type":"Brand","name":a},"category":"Sanat eseri",
         "offers":{"@type":"Offer","url":url,"priceCurrency":"USD","price":int(w['price']),"availability":"https://schema.org/OutOfStock" if sold else "https://schema.org/InStock","seller":{"@type":"Organization","name":"Nadir Eser"}}}
     others=[x for x in works if x['artist']==a and x['id']!=w['id']]
     more=[x for x in works if x['artist']!=a and not x['sold']][:6]
@@ -50,7 +50,7 @@ def page(w):
 <header><div class="wrap"><a class="logo" href="/">Nadir <i>Eser</i></a><a class="back" href="/#koleksiyon">← Tüm eserler</a></div></header>
 <main class="wrap">
 <nav class="bc"><a href="/">Nadir Eser</a> › <a href="/#koleksiyon">Koleksiyon</a> › {e(a)}</nav>
-<article class="work"><div class="im{' sold' if sold else ''}"><img src="{e(w['img'])}" alt="{e(a)}, {e(t)}"></div>
+<article class="work"><div class="im{' sold' if sold else ''}"><img src="{e(w['img'])}" alt="{e(a)}, {e(t)}">{"".join(f'<img src="{e(m)}" alt="{e(a)}, {e(t)}" loading="lazy">' for m in w['more'])}</div>
 <div class="tx"><div class="ar">{e(a)}</div><h1>{e(t)}</h1><dl>{dl}</dl>
 <div class="pr">{'Satıldı' if sold else price(w['price'])}</div>
 <p class="hw">{'Bu eser satılmıştır. Benzer eserler için bize yazabilirsiniz.' if sold else 'Sabit fiyatlı, hemen satın alınabilir. Satın almak için e-posta ya da WhatsApp ile yazın; ödeme ve teslimat detaylarını birlikte netleştirelim.'}</p>

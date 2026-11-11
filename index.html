@@ -158,6 +158,7 @@ footer.note .wrap{padding-block:22px}
   border:1px solid var(--hair); background:#fff; padding:11px 12px;
   font-family:var(--mono); font-size:0.84rem; min-width:0;
 }
+.thumbs{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}.thumbs img{width:64px;height:64px;object-fit:cover;cursor:pointer;border:1px solid var(--hair)}
 .copy-line span{overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
 .copy-line button{flex:none; background:transparent; border:1px solid var(--hair); padding:5px 10px; font-size:0.72rem; cursor:pointer; color:var(--text-hi)}
 
@@ -344,7 +345,7 @@ footer.note .wrap{padding-block:22px}
     catalog.innerHTML = "";
     var available = 0;
     // Satılan eserler listenin en altında
-    var PIN = ["3"]; // listenin en üstünde gösterilecek eser numaraları (satılmamışsa)
+    var PIN = ["3","392"]; // listenin en üstünde gösterilecek eser numaraları (satılmamışsa)
     var avail = works.filter(function(w){ return !w.sold; });
     var pinned = PIN.map(function(id){ return avail.filter(function(w){ return String(w.id) === id; })[0]; }).filter(Boolean);
     var ordered = pinned.concat(avail.filter(function(w){ return pinned.indexOf(w) < 0; })).concat(works.filter(function(w){ return w.sold; }));
@@ -392,7 +393,8 @@ footer.note .wrap{padding-block:22px}
     }catch(e){}
     sheetBody.innerHTML =
       '<div class="layout">' +
-        '<div class="big-swatch"><img src="' + esc(w.img) + '" alt="' + esc(w.title) + ', ' + esc(w.artist) + '"></div>' +
+        '<div><div class="big-swatch"><img id="sheet-main" src="' + esc(w.img) + '" alt="' + esc(w.title) + ', ' + esc(w.artist) + '"></div>' +
+          ((w.more && w.more.length) ? '<div class="thumbs">' + [w.img].concat(w.more).map(function(u){ return '<img data-thumb="' + esc(u) + '" src="' + esc(u) + '" alt="">'; }).join('') + '</div>' : '') + '</div>' +
         '<div class="txt">' +
           '<div class="artist2">' + esc(w.artist) + '</div>' +
           '<h2 id="sheet-title">' + esc(w.title) + '</h2>' +
@@ -428,6 +430,10 @@ footer.note .wrap{padding-block:22px}
     if(!el) return;
     e.preventDefault();
     openSheet(el.getAttribute("data-open"));
+  });
+  sheetBody.addEventListener("click", function(e){
+    var t = e.target.closest("[data-thumb]"), m = document.getElementById("sheet-main");
+    if(t && m) m.src = t.getAttribute("data-thumb");
   });
   scrim.addEventListener("click", closeSheet);
   sheetBody.addEventListener("click", function(e){
@@ -479,7 +485,7 @@ footer.note .wrap{padding-block:22px}
           next.push({
             id: id, artist: p.artist || base.artist || "", title: p.title,
             year: p.year == null ? (base.year || "") : String(p.year), medium: p.medium || base.medium || "", size: p.size || base.size || "",
-            price: Number(p.price) || 0, sold: !!p.sold, img: img
+            price: Number(p.price) || 0, sold: !!p.sold, img: img, more: (p.more || []).filter(function(u){ return /^https?:\/\//.test(u); })
           });
         });
         if(!next.length) return;
