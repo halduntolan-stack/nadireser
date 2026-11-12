@@ -139,6 +139,7 @@ nav.main a.active,nav.main a:hover{color:var(--turquoise); border-bottom-color:v
 .card .dims{font-size:0.82rem; color:var(--text-lo); min-height:1.3em}
 .card .pricebox{border-top:1px solid var(--hair); margin-top:12px; padding-top:14px}
 .card .pricebox small{display:block; font-size:0.66rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--text-lo)}
+.was{color:var(--text-lo); font-size:.82em; text-decoration:line-through; margin-right:6px}
 .card .price{font-family:var(--mono); font-size:1.02rem; font-variant-numeric:tabular-nums; margin:2px 0 14px}
 .card .btn{width:100%; padding:15px 18px; justify-content:flex-start}
 
@@ -341,6 +342,11 @@ footer.note .wrap{padding-block:22px}
 
   var fmt = new Intl.NumberFormat("en-US");
   function priceStr(n){ return "$" + fmt.format(n); }
+  // Süreli kampanya: eser no -> indirim %, bitiş tarihinden sonra otomatik kalkar
+  var DEAL = { ids: {"3": 10, "392": 10}, until: new Date("2026-11-14T23:59:59+03:00") };
+  function dealPct(w){ return (!w.sold && Date.now() < DEAL.until && DEAL.ids[String(w.id)]) || 0; }
+  function dealPrice(w){ var p = dealPct(w); return p ? Math.round(w.price * (100 - p) / 100) : w.price; }
+  function priceHtml(w){ return dealPct(w) ? '<s class="was">' + priceStr(w.price) + '</s> ' + priceStr(dealPrice(w)) : priceStr(w.price); }
 
   var catalog = document.getElementById("catalog");
   var countEl = document.getElementById("count-available");
@@ -379,11 +385,11 @@ footer.note .wrap{padding-block:22px}
           '<div class="artist">' + esc(w.artist) + '</div>' +
           '<h3>' + esc(w.title) + '</h3>' +
           '<div class="dims">' + esc(dimsLine(w)) + '</div>' +
-          '<div class="pricebox"><small>Satış fiyatı</small>' +
-            '<div class="price">' + priceStr(w.price) + '</div>' +
+          '<div class="pricebox"><small>' + (dealPct(w) ? '%' + dealPct(w) + ' indirim · 14 Kasım\'a kadar' : 'Satış fiyatı') + '</small>' +
+            '<div class="price">' + priceHtml(w) + '</div>' +
             (w.sold
               ? '<button class="btn" disabled>Satıldı</button>'
-              : '<button class="btn" data-open="' + w.id + '">Hemen Al — ' + priceStr(w.price) + '</button>') +
+              : '<button class="btn" data-open="' + w.id + '">Hemen Al — ' + priceStr(dealPrice(w)) + '</button>') +
           '</div>' +
         '</div>';
       catalog.appendChild(card);
@@ -415,7 +421,7 @@ footer.note .wrap{padding-block:22px}
             (w.medium ? '<dt>Teknik</dt><dd>' + esc(w.medium) + '</dd>' : '') +
             '<dt>Ölçü</dt><dd>' + esc(w.size) + '</dd>' +
           '</dl>' +
-          '<div class="price2">' + priceStr(w.price) + '</div>' +
+          '<div class="price2">' + priceHtml(w) + '</div>' + (dealPct(w) ? '<div class="how" style="border-left-color:#c9962f"><b>%' + dealPct(w) + ' indirim</b>, yalnızca 12-14 Kasım. Fiyat 15 Kasım\'da eski haline döner.</div>' : '') +
           '<div class="how">Satın almak için aşağıdaki butonla bize e-posta gönderin; ödeme ve teslimat detaylarını birlikte netleştiririz.</div>' +
           '<div class="contact-row"><a class="btn" href="mailto:info@nadireser.com.tr?subject=' + encodeURIComponent("Satın alma talebi: " + w.artist + " - " + w.title) + '">E-posta ile satın alın</a><a class="btn wa" href="#" data-wa="' + esc("Merhaba, " + w.artist + " - " + w.title + " (lot " + w.id + ") eseri hakkında bilgi almak istiyorum.") + '">WhatsApp ile yazın</a></div>' +
           '<div class="close"><a class="btn ghost" href="/eser-' + esc(w.id) + '">Eser sayfası</a> <button class="btn ghost" id="sheet-close-btn">Kapat</button></div>' +
