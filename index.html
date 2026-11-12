@@ -343,11 +343,17 @@ footer.note .wrap{padding-block:22px}
   var fmt = new Intl.NumberFormat("en-US");
   function priceStr(n){ return "$" + fmt.format(n); }
   // Süreli kampanya: eser no -> indirim %, bitiş tarihinden sonra otomatik kalkar
-  var DEAL = { ids: {"3": 10, "392": 10}, until: new Date("2026-11-14T23:59:59+03:00") };
-  function dealPct(w){ return (!w.sold && Date.now() < DEAL.until && DEAL.ids[String(w.id)]) || 0; }
+  var DEAL = { pct: 10, exclude: ["28", "421", "30", "31"], until: new Date("2026-11-14T23:59:59+03:00") }; // exclude: indirim uygulanmayan eser numaraları
+  function dealPct(w){ return (!w.sold && Date.now() < DEAL.until && DEAL.exclude.indexOf(String(w.id)) < 0) ? DEAL.pct : 0; }
   function dealPrice(w){ var p = dealPct(w); return p ? Math.round(w.price * (100 - p) / 100) : w.price; }
   function priceHtml(w){ return dealPct(w) ? '<s class="was">' + priceStr(w.price) + '</s> ' + priceStr(dealPrice(w)) : priceStr(w.price); }
 
+  if(Date.now() < new Date("2026-11-14T23:59:59+03:00")){
+    var bn = document.createElement("div");
+    bn.style.cssText = "background:#1d4a3c;color:#f3ecdb;text-align:center;padding:10px 16px;font:600 14px/1.4 Jost,Arial,sans-serif;letter-spacing:.02em";
+    bn.textContent = "3 güne özel: eserlerde %10 indirim · 12-14 Kasım · İndirimli eserlerin fiyatı üstü çizili gösterilir";
+    document.body.insertBefore(bn, document.body.firstChild);
+  }
   var catalog = document.getElementById("catalog");
   var countEl = document.getElementById("count-available");
 
