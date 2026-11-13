@@ -16,7 +16,7 @@ works=[dict(w,img=imgurl(w),more=[m for m in (w.get('more') or []) if str(m).sta
 e=lambda s:html.escape(str(s or ''),quote=True)
 import datetime
 DEAL_EXCLUDE={'28','421','30','31'}
-def deal(w): return str(w['id']) not in DEAL_EXCLUDE and not w.get('sold') and datetime.datetime.utcnow()<datetime.datetime(2026,11,14,20,59,59)
+def deal(w): return str(w['id']) not in DEAL_EXCLUDE and not w.get('sold') and datetime.datetime.utcnow()<datetime.datetime(2026,11,13,20,59,59)
 def price(n): return "$"+format(int(n),",")
 def meta(w): return " · ".join(x for x in [w.get('year'),w.get('medium'),w.get('size')] if x)
 def fixsize(s): return (s or '').replace('x',' × ').replace('  ',' ') if re.match(r'^\s*\d+x\d',s or '') else (s or '')
@@ -55,7 +55,7 @@ def page(w):
 <nav class="bc"><a href="/">Nadir Eser</a> › <a href="/#koleksiyon">Koleksiyon</a> › {e(a)}</nav>
 <article class="work"><div class="im{' sold' if sold else ''}{' multi' if w['more'] else ''}"><img src="{e(w['img'])}" alt="{e(a)}, {e(t)}">{"".join(f'<img src="{e(m)}" alt="{e(a)}, {e(t)}" loading="lazy">' for m in w['more'])}</div>
 <div class="tx"><div class="ar">{e(a)}</div><h1>{e(t)}</h1><dl>{dl}</dl>
-<div class="pr">{'Satıldı' if sold else (f'<s>{price(w["price"])}</s> {price(round(int(w["price"])*0.9))}' if deal(w) else price(w['price']))}</div>{('<div class="dl">%10 indirim · 12-14 Kasım&apos;a özel</div>' if deal(w) and not sold else '')}
+<div class="pr">{'Satıldı' if sold else (f'<s>{price(w["price"])}</s> {price(round(int(w["price"])*0.9))}' if deal(w) else price(w['price']))}</div>{('<div class="dl">%10 indirim · bu gece 24:00&apos;e kadar</div>' if deal(w) and not sold else '')}
 <p class="hw">{'Bu eser satılmıştır. Benzer eserler için bize yazabilirsiniz.' if sold else 'Sabit fiyatlı, hemen satın alınabilir. Satın almak için e-posta ya da WhatsApp ile yazın; ödeme ve teslimat detaylarını birlikte netleştirelim.'}</p>
 <div class="cr">{buy}</div></div></article>
 {rel}

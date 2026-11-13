@@ -343,15 +343,15 @@ footer.note .wrap{padding-block:22px}
   var fmt = new Intl.NumberFormat("en-US");
   function priceStr(n){ return "$" + fmt.format(n); }
   // Süreli kampanya: eser no -> indirim %, bitiş tarihinden sonra otomatik kalkar
-  var DEAL = { pct: 10, exclude: ["28", "421", "30", "31"], until: new Date("2026-11-14T23:59:59+03:00") }; // exclude: indirim uygulanmayan eser numaraları
+  var DEAL = { pct: 10, exclude: ["28", "421", "30", "31"], until: new Date("2026-11-13T23:59:59+03:00") }; // exclude: indirim uygulanmayan eser numaraları
   function dealPct(w){ return (!w.sold && Date.now() < DEAL.until && DEAL.exclude.indexOf(String(w.id)) < 0) ? DEAL.pct : 0; }
   function dealPrice(w){ var p = dealPct(w); return p ? Math.round(w.price * (100 - p) / 100) : w.price; }
   function priceHtml(w){ return dealPct(w) ? '<s class="was">' + priceStr(w.price) + '</s> ' + priceStr(dealPrice(w)) : priceStr(w.price); }
 
-  if(Date.now() < new Date("2026-11-14T23:59:59+03:00")){
+  if(Date.now() < new Date("2026-11-13T23:59:59+03:00")){
     var bn = document.createElement("div");
     bn.style.cssText = "background:#1d4a3c;color:#f3ecdb;text-align:center;padding:10px 16px;font:600 14px/1.4 Jost,Arial,sans-serif;letter-spacing:.02em";
-    bn.textContent = "3 güne özel: eserlerde %10 indirim · 12-14 Kasım · İndirimli eserlerin fiyatı üstü çizili gösterilir";
+    bn.textContent = "Son saatler: eserlerde %10 indirim · bu gece 24:00\'e kadar · İndirimli eserlerin fiyatı üstü çizili gösterilir";
     document.body.insertBefore(bn, document.body.firstChild);
   }
   var catalog = document.getElementById("catalog");
@@ -391,7 +391,7 @@ footer.note .wrap{padding-block:22px}
           '<div class="artist">' + esc(w.artist) + '</div>' +
           '<h3>' + esc(w.title) + '</h3>' +
           '<div class="dims">' + esc(dimsLine(w)) + '</div>' +
-          '<div class="pricebox"><small>' + (dealPct(w) ? '%' + dealPct(w) + ' indirim · 14 Kasım\'a kadar' : 'Satış fiyatı') + '</small>' +
+          '<div class="pricebox"><small>' + (dealPct(w) ? '%' + dealPct(w) + ' indirim · bu gece 24:00\'e kadar' : 'Satış fiyatı') + '</small>' +
             '<div class="price">' + priceHtml(w) + '</div>' +
             (w.sold
               ? '<button class="btn" disabled>Satıldı</button>'
@@ -427,7 +427,7 @@ footer.note .wrap{padding-block:22px}
             (w.medium ? '<dt>Teknik</dt><dd>' + esc(w.medium) + '</dd>' : '') +
             '<dt>Ölçü</dt><dd>' + esc(w.size) + '</dd>' +
           '</dl>' +
-          '<div class="price2">' + priceHtml(w) + '</div>' + (dealPct(w) ? '<div class="how" style="border-left-color:#c9962f"><b>%' + dealPct(w) + ' indirim</b>, yalnızca 12-14 Kasım. Fiyat 15 Kasım\'da eski haline döner.</div>' : '') +
+          '<div class="price2">' + priceHtml(w) + '</div>' + (dealPct(w) ? '<div class="how" style="border-left-color:#c9962f"><b>%' + dealPct(w) + ' indirim</b>, yalnızca bu gece 24:00\'e kadar. Fiyat gece yarısı eski haline döner.</div>' : '') +
           '<div class="how">Satın almak için aşağıdaki butonla bize e-posta gönderin; ödeme ve teslimat detaylarını birlikte netleştiririz.</div>' +
           '<div class="contact-row"><a class="btn" href="mailto:info@nadireser.com.tr?subject=' + encodeURIComponent("Satın alma talebi: " + w.artist + " - " + w.title) + '">E-posta ile satın alın</a><a class="btn wa" href="#" data-wa="' + esc("Merhaba, " + w.artist + " - " + w.title + " (lot " + w.id + ") eseri hakkında bilgi almak istiyorum.") + '">WhatsApp ile yazın</a></div>' +
           '<div class="close"><a class="btn ghost" href="/eser-' + esc(w.id) + '">Eser sayfası</a> <button class="btn ghost" id="sheet-close-btn">Kapat</button></div>' +
